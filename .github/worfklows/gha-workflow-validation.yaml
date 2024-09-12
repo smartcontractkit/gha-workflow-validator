@@ -1,0 +1,23 @@
+name: gha-workflow-validator-test
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+
+    steps:
+      # checkout repo if not pull_request trigger
+      - name: Checkout Repo
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: GHA Workflow Validator
+        uses: smartcontractkit/.github/actions/gha-workflow-validator@ec545c1bd815611d34dd2f1579a691cc1962e7a8 # gha-workflow-validator@0.4.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          evaluate-mode: true
