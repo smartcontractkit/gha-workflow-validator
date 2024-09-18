@@ -2,16 +2,19 @@ name: GHA Workflow Validation
 
 on:
   pull_request:
+  merge_group:
 
 jobs:
   validate-workflows:
+    name: Validate Workflow Changes
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-    runs-on: ubuntu-latest
-
+    # Skip on merge group events
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
-      # checkout repo if not pull_request trigger
+      # checkout repo if not pull_request trigger (disabled for now)
       - name: Checkout Repo
         if: github.event_name != 'pull_request'
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
