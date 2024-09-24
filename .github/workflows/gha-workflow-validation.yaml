@@ -23,5 +23,3 @@ jobs:
         uses: smartcontractkit/.github/actions/gha-workflow-validator@d37cd04f24b7360fde0c6059b3ecf41fe3e80839 # gha-workflow-validator@0.4.2
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        with:
-          evaluate-mode: true
