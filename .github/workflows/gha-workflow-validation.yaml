@@ -20,6 +20,6 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Run gha-workflow-validator action
-        uses: smartcontractkit/.github/actions/gha-workflow-validator@bcabd868177d62a885356ad50b81f0d38a38ddd3 # gha-workflow-validator@0.4.5
+        uses: smartcontractkit/.github/actions/gha-workflow-validator@ac1fa37beb1436800d74b7717f614a12137a70a6 # gha-workflow-validator@0.4.6
         env:
           GITHUB_TOKEN: ${{ github.token }}
