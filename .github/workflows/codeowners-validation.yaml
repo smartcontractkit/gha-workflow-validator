@@ -2,19 +2,35 @@ name: "CodeOwners Validation"
 
 on:
   pull_request:
-    paths:
-      - ".github/CODEOWNERS"
-      - "CODEOWNERS"
+    # Path filtering doesn't work on org-wide rulesets
+    # paths:
+    #   - ".github/CODEOWNERS"
+    #   - "CODEOWNERS"
 
 jobs:
-  validate-codeowners:
-    name: "Validate"
+  filter-changes:
+    name: Filter Changes for CodeOwners
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
+      pull-requests: read
     steps:
-      # Checks-out your repository, which is validated in the next step
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        with:
+          filters: |
+            codeowners:
+              - ".github/CODEOWNERS"
+              - "CODEOWNERS"
+
+  validate-codeowners:
+    name: "Validate"
+    runs-on: ubuntu-latest
+    needs: filter-changes
+    permissions:
+      contents: read
+      id-token: write
+    if: ${{ needs.filter-changes.outputs.codeowners == 'true' }}
+    steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -26,11 +42,10 @@ jobs:
         with:
           aws-role-arn: ${{ secrets.GATI_CODEOWNERS_IAM_ARN }}
           aws-lambda-url: ${{ secrets.GATI_CODEOWNERS_LAMBDA_URL }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: "us-west-2"
 
       - name: GitHub CODEOWNERS Validator
         uses: patrickhuie19/codeowners-validator@176f0bfd300c754c6cc8d4a9e9863323e6752b90 # v0.1.8
-        # input parameters
         with:
           github_access_token: ${{ steps.gh-token.outputs.access-token }}
           repository_path: ${{ github.workspace }}
