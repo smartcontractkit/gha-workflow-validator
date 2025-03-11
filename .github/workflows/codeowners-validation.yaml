@@ -9,13 +9,16 @@ on:
 
 jobs:
   filter-changes:
-    name: Filter Changes for CodeOwners
+    name: Filter changes
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: read
+    outputs:
+      codeowners: ${{ steps.filter.outputs.codeowners }}
     steps:
       - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
         with:
           filters: |
             codeowners:
