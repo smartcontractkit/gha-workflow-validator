@@ -2,12 +2,11 @@ name: "CodeOwners Validation"
 
 on:
   pull_request:
-    # Path filtering doesn't work on org-wide rulesets
-    # paths:
-    #   - ".github/CODEOWNERS"
-    #   - "CODEOWNERS"
 
 jobs:
+  # This job is necessary because the org-wide rulesets don't support event-based path filtering.
+  # (https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#running-your-pull_request-workflow-based-on-files-changed-in-a-pull-request)
+  # We include this job to filter the paths manually.
   filter-changes:
     name: Filter changes
     runs-on: ubuntu-latest
