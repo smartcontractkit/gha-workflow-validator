@@ -1,5 +1,4 @@
 # Github Actions (GHA) Workflow Validator
 
-A repo to house the workflow used in an org-wide ruleset for validation.
+This workflow has been migrated to https://github.com/smartcontractkit/gha-org-workflows.
 
-See: https://github.com/smartcontractkit/.github/tree/main/actions/gha-workflow-validator for more information.
